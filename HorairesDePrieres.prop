@@ -1,0 +1,10 @@
+{
+	"modules": { 
+		"HorairesDePrieres": {
+			"version": "1.0",
+			"name": "prieres",
+			"rules": ["pray hour","prayer schedule","schedule prayer","next prayer"]
+		}
+	}
+}
+			
