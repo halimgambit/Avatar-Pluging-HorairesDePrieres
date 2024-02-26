@@ -35,34 +35,34 @@ function prieres (data, client) {
 	  
 		  const Fajr = $('span.timeinday').eq(0).text();
 		  if (time === Fajr) {
-			playAdhan();
+			playAdhan(data, client);
 		  }
 	  
 		  const Dhouhr = $('span.timeinday').eq(2).text();
 		  if (time === Dhouhr) {
-			playAdhan();
+			playAdhan(data, client);
 		  }
 	  
 		  const Asr = $('span.timeinday').eq(3).text();
 		  if (time === Asr) {
-			playAdhan();
+			playAdhan(data, client);
 		  }
 	  
 		  const Maghrib = $('span.timeinday').eq(4).text();
 		  if (time === Maghrib) {
-			playAdhan();
+			playAdhan(data, client);
 		  }
 	  
 		  const Isha = $('span.timeinday').eq(5).text();
 		  if (time === Isha) {
-			playAdhan();
+			playAdhan(data, client);
 		  }
 	  
 		  Avatar.speak(`Salam alaikoum, voici les horaires de prières à ${ville.toLowerCase()}: Fajr à ${Fajr}. Dhouhr à ${Dhouhr}. Asr à ${Asr}. Maghrib à ${Maghrib}. Isha à ${Isha}.`, data.client, () => {
 			Avatar.Speech.end(data.client);
 		  });
 		} catch (error) {
-		  Avatar.speak(`Je n'arrive pas à accéder au site al-hamdoulillah, ${error}`, data.client, () => {
+		  Avatar.speak(`Je n'arrive pas à accéder au site al-hamdoulillah, ${error.message}`, data.client, () => {
 			Avatar.Speech.end(data.client);
 		  });
 		}
