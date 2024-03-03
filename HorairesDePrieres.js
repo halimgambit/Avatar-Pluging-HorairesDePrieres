@@ -12,7 +12,6 @@ function prieres (data, client) {
 
 	async function nameTimePrayer() {
 		try {
-		  // Fetch user's city from IP
 		  const responseCity = await fetch('http://ip-api.com/json/');
 		  if (!responseCity.ok) {
 			throw new Error(responseCity.statusText);
@@ -20,7 +19,6 @@ function prieres (data, client) {
 		  const result = await responseCity.json();
 		  const ville = result.city;
 	  
-		  // Fetch prayer times based on the city
 		  const prayerResponse = await fetch(`https://www.al-hamdoulillah.com/horaires-prieres/monde/europe/france/${ville.toLowerCase()}.html#jour`);
 		  if (!prayerResponse.ok) {
 			throw new Error(prayerResponse.statusText);
@@ -30,46 +28,34 @@ function prieres (data, client) {
 		  const cheerio = require("cheerio");
 		  const $ = cheerio.load(html);
 	  
-		  let date = new Date();
-		  let time = `${date.getHours()}:${date.getMinutes()}`;
-	  
-		  const Fajr = $('span.timeinday').eq(0).text();
-		  if (time === Fajr) {
-			playAdhan(data, client);
-		  }
-	  
-		  const Dhouhr = $('span.timeinday').eq(2).text();
-		  if (time === Dhouhr) {
-			playAdhan(data, client);
-		  }
-	  
-		  const Asr = $('span.timeinday').eq(3).text();
-		  if (time === Asr) {
-			playAdhan(data, client);
-		  }
-	  
-		  const Maghrib = $('span.timeinday').eq(4).text();
-		  if (time === Maghrib) {
-			playAdhan(data, client);
-		  }
-	  
-		  const Isha = $('span.timeinday').eq(5).text();
-		  if (time === Isha) {
-			playAdhan(data, client);
-		  }
-	  
-		  Avatar.speak(`Salam alaikoum, voici les horaires de prières à ${ville.toLowerCase()}: Fajr à ${Fajr}. Dhouhr à ${Dhouhr}. Asr à ${Asr}. Maghrib à ${Maghrib}. Isha à ${Isha}.`, data.client, () => {
-			Avatar.Speech.end(data.client);
-		  });
+		const Fajr = $('span.timeinday').eq(0).text(); 
+			const Dhuhr = $('span.timeinday').eq(2).text(); 
+			const Asr = $('span.timeinday').eq(3).text(); 
+			const Maghrib = $('span.timeinday').eq(4).text(); 
+			const Isha = $('span.timeinday').eq(5).text();
+
+			Avatar.speak(`Salam alaikoum, voici les heures de priére à ${ville.toLowerCase()}: Fajr à ${Fajr}. Dhouhr à ${Dhuhr}. Asr à ${Asr}. Maghrib à ${Maghrib}. Isha à ${Isha}.`, data.client, () => {
+				Avatar.Speech.end(data.client);
+			});
+
+
+			let date = new Date();
+			let hours = date.getHours();
+			let minutes = date.getMinutes();
+			let currentTime = `${hours}:${minutes < 10 ? '0' : ''}${minutes}`;
+
+	
+			if (currentTime === Fajr || currentTime === Dhuhr || currentTime === Asr || currentTime === Maghrib || currentTime === Isha) {
+				playAdhan(data, client)
+			}
 		} catch (error) {
-		  Avatar.speak(`Je n'arrive pas à accéder au site al-hamdoulillah, ${error.message}`, data.client, () => {
-			Avatar.Speech.end(data.client);
-		  });
+			Avatar.speak(`Je n'arrive pas à accéder au site al-hamdoulillah, ${error.message}`, data.client, () => {
+				Avatar.Speech.end(data.client);
+			});
 		}
-	  }
+	}
 	  
 	  nameTimePrayer();
-	  
 
 }
 
